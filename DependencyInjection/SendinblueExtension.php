@@ -1,6 +1,6 @@
 <?php
 
-namespace RevisionTen\Mailchimp\DependencyInjection;
+namespace RevisionTen\Sendinblue\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;

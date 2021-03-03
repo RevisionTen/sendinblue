@@ -8,12 +8,15 @@
         {
             "name": "Cornelius K",
             "email": "kim247@hotmail.de"
+        },
+        {
+            "name": "Nils Petersen",
+            "email": "kontakt@entepe.de"
         }
     ],
     "require": {
         "php": "^7.1",
         "ext-json": "*",
-        "guzzlehttp/guzzle": "^6",
         "sendinblue/api-v3-sdk": "7.x.x"
     },
     "autoload": {
