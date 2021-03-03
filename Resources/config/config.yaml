@@ -1,5 +1,5 @@
 services:
-    RevisionTen\Mailchimp\Services\MailchimpService:
+    RevisionTen\Sendinblue\Services\SendinblueService:
         autowire: true
         arguments:
-            $config: '%mailchimp%'
+            $config: '%sendinblue%'
