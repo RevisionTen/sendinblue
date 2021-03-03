@@ -1,10 +1,10 @@
-# revision-ten/mailchimp
+# revision-ten/sendinblue
 
 ## Installation
 
 #### Install via composer
 
-Run `composer req revision-ten/mailchimp`.
+Run `composer req revision-ten/sendinblue`.
 
 ### Add the Bundle
 
@@ -12,12 +12,12 @@ Add the bundle to your AppKernel (Symfony 3.4.\*) or your Bundles.php (Symfony 4
 
 Symfony 3.4.\* /app/AppKernel.php:
 ```PHP
-new \RevisionTen\Mailchimp\MailchimpBundle(),
+new \RevisionTen\Sendinblue\Sendinblue\Bundle(),
 ```
 
 Symfony 4.\* /config/bundles.php:
 ```PHP
-RevisionTen\Mailchimp\MailchimpBundle::class => ['all' => true],
+RevisionTen\Sendinblue\SendinblueBundle::class => ['all' => true],
 ```
 
 ### Configuration
@@ -25,31 +25,35 @@ RevisionTen\Mailchimp\MailchimpBundle::class => ['all' => true],
 Configure the bundle:
 
 ```YAML
-# Mailchimp example config.
-mailchimp:
-    api_key: 'XXXXXXXXXXXXXXXXXXXXXXX-us5' # Your mailchimp api key.
+# sendinblue example config.
+sendinblue:
+    api_key: 'XXXXXXXXXXXXXXXXXXXXXXX-us5' # Your sendinblue api key.
     campaigns:
         dailyNewsletterCampagin:
-            list_id: '123456' # Id of your newsletter list.
+            list_id: 12345 # Id of your newsletter list.
 ```
 
 ### Usage
 
-Use the MailchimpService to subscribe users.
+Use the SendinblueService to subscribe users.
 
 Symfony 3.4.\* example:
 ```PHP
-$mailchimpService = $this->container->get(MailchimpService::class);
+$sendinblueService = $this->container->get(SendinblueService::class);
 
-$subscribed = $mailchimpService->subscribe('dailyNewsletterCampagin', 'visitor.email@domain.tld', 'My Website', [
-    'FNAME' => 'John',
-    'LNAME' => 'Doe',
-]);
+try {
+    $subscribed = $sendinblueService->subscribe('dailyNewsletterCampagin', 'visitor.email@domain.tld', 'My Website', [
+        'FNAME' => 'John',
+        'LNAME' => 'Doe',
+    ]);
+} catch (Exception $e) {
+    // ...
+}
 ```
 
 Or unsubscribe users:
 ```PHP
-$mailchimpService = $this->container->get(MailchimpService::class);
+$sendinblueService = $this->container->get(SendinblueService::class);
 
-$unsubscribed = $mailchimpService->unsubscribe('dailyNewsletterCampagin', 'visitor.email@domain.tld');
+$unsubscribed = $sendinblueService->unsubscribe('dailyNewsletterCampagin', 'visitor.email@domain.tld');
 ```
