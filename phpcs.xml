@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<ruleset name="bdrops Standard" namespace="bdrops\CS\Standard">
+    <description>bdrops PHPCS coding standards</description>
+    <rule ref="PSR2">
+        <exclude name="Generic.Files.LineLength" />
+    </rule>
+    <rule ref="Symfony">
+        <exclude name="Symfony.Commenting.License.Warning" />
+    </rule>
+    <exclude-pattern>*/tests/*</exclude-pattern>
+    <exclude-pattern>*/var/*</exclude-pattern>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/bin/*</exclude-pattern>
+    <exclude-pattern>*/src/Entity/*</exclude-pattern>
+</ruleset>
