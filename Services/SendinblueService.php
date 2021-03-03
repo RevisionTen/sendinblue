@@ -31,13 +31,14 @@ class SendinblueService
      *
      * @param string $campaign
      * @param string $email
-     * @param array  $mergeFields
+     * @param string $source
+     * @param array  $attributes
      *
      * @return bool
      *
      * @throws Exception
      */
-    public function subscribe(string $campaign, string $email, array $mergeFields = []): bool
+    public function subscribe(string $campaign, string $email, string $source = null, array $attributes = []): bool
     {
         if (!isset($this->config['campaigns'][$campaign])) {
             return false;
@@ -45,7 +46,7 @@ class SendinblueService
 
         $contact = new CreateContact();
         $contact['email'] = $email;
-        $contact['attributes'] = $mergeFields;
+        $contact['attributes'] = $attributes;
         $contact['listIds'] = [
             $this->config['campaigns'][$campaign]['list_id'],
         ];
