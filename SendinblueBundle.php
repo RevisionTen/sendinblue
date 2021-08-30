@@ -7,19 +7,13 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class SendinblueBundle extends Bundle
 {
-    public const VERSION = '0.0.1';
+    public const VERSION = '1.0.0';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function boot()
+    public function boot(): void
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
     }
 }

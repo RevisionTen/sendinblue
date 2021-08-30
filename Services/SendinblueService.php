@@ -7,18 +7,20 @@ namespace RevisionTen\Sendinblue\Services;
 use Exception;
 use GuzzleHttp\Client;
 use SendinBlue\Client\Api\ContactsApi;
+use SendinBlue\Client\ApiException;
 use SendinBlue\Client\Configuration;
 use SendinBlue\Client\Model\CreateContact;
 
 class SendinblueService
 {
-    /** @var array */
-    private $config;
-    private $apiInstance;
+    private array $config;
+
+    private ContactsApi $apiInstance;
 
     public function __construct(array $config)
     {
         $this->config = $config;
+
         $apiConfig = Configuration::getDefaultConfiguration()->setApiKey('api-key', $config['api_key']);
         $this->apiInstance = new ContactsApi(
             new Client(),
@@ -63,7 +65,7 @@ class SendinblueService
      *
      * @return bool
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws ApiException
      */
     public function unsubscribe(string $campaign, string $email): bool
     {
