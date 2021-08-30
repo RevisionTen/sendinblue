@@ -30,7 +30,8 @@ sendinblue:
     api_key: 'XXXXXXXXXXXXXXXXXXXXXXX-us5' # Your sendinblue api key.
     campaigns:
         dailyNewsletterCampagin:
-            list_id: 12345 # Id of your newsletter list.
+            list_id: 12345 # ID of your newsletter list.
+            doi_template_id: 123 # ID of your double opt-in template.
 ```
 
 ### Usage
