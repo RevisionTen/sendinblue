@@ -12,6 +12,7 @@ use SendinBlue\Client\Configuration;
 use SendinBlue\Client\Model\CreateContact;
 use SendinBlue\Client\Model\CreateDoiContact;
 use SendinBlue\Client\Model\GetExtendedContactDetails;
+use SendinBlue\Client\Model\UpdateContact;
 
 class SendinblueService
 {
@@ -31,9 +32,31 @@ class SendinblueService
     /**
      * @throws ApiException
      */
+    public function getContacts(string $campaign, ?string $limit = '10000', ?string $offset = '0'): ?array
+    {
+        if (!isset($this->config['campaigns'][$campaign])) {
+            return null;
+        }
+
+        $listId = (int) ($this->config['campaigns'][$campaign]['list_id'] ?? 1);
+
+        return $this->apiInstance->getContactsFromList($listId, null, $limit, $offset)->getContacts();
+    }
+
+    /**
+     * @throws ApiException
+     */
     public function getContact(string $email): GetExtendedContactDetails
     {
         return $this->apiInstance->getContactInfo($email);
+    }
+
+    /**
+     * @throws ApiException
+     */
+    public function updateContact(string $email, UpdateContact $updateContact): void
+    {
+        $this->apiInstance->updateContact($email, $updateContact);
     }
 
     /**
