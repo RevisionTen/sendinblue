@@ -11,6 +11,7 @@ use SendinBlue\Client\ApiException;
 use SendinBlue\Client\Configuration;
 use SendinBlue\Client\Model\CreateContact;
 use SendinBlue\Client\Model\CreateDoiContact;
+use SendinBlue\Client\Model\GetExtendedContactDetails;
 
 class SendinblueService
 {
@@ -28,16 +29,24 @@ class SendinblueService
     }
 
     /**
+     * @throws ApiException
+     */
+    public function getContact(string $email): GetExtendedContactDetails
+    {
+        return $this->apiInstance->getContactInfo($email);
+    }
+
+    /**
      * Subscribes a user to a list.
      *
      * @param string $campaign
      * @param string $email
-     * @param string $source
-     * @param array  $attributes
+     * @param string|null $source
+     * @param array $attributes
      *
      * @return bool
      *
-     * @throws Exception
+     * @throws ApiException
      */
     public function subscribe(string $campaign, string $email, string $source = null, array $attributes = []): bool
     {
@@ -49,7 +58,7 @@ class SendinblueService
         $contact->setEmail($email);
         $contact->setAttributes((object) $attributes);
 
-        $listId = (int) $this->config['campaigns'][$campaign]['list_id'] ?? 1;
+        $listId = (int) ($this->config['campaigns'][$campaign]['list_id'] ?? 1);
         $contact->setListIds([$listId]);
 
         $this->apiInstance->createContact($contact);
@@ -62,13 +71,13 @@ class SendinblueService
      *
      * @param string $campaign
      * @param string $email
-     * @param string $source
-     * @param array  $attributes
-     * @param array  $redirectionUrl
+     * @param string|null $source
+     * @param array $attributes
+     * @param string $redirectionUrl
      *
      * @return bool
      *
-     * @throws Exception
+     * @throws ApiException
      */
     public function subscribeWithDoubleOptIn(string $campaign, string $email, string $source = null, array $attributes = [], string $redirectionUrl): bool
     {
@@ -80,7 +89,7 @@ class SendinblueService
         $contact->setEmail($email);
         $contact->setAttributes((object) $attributes);
 
-        $listId = (int) $this->config['campaigns'][$campaign]['list_id'] ?? 1;
+        $listId = (int) ($this->config['campaigns'][$campaign]['list_id'] ?? 1);
         $contact->setIncludeListIds([$listId]);
 
         $templateId = $this->config['campaigns'][$campaign]['doi_template_id'] ?? null;
