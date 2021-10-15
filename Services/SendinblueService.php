@@ -32,7 +32,7 @@ class SendinblueService
     /**
      * @throws ApiException
      */
-    public function getContacts(string $campaign, ?string $limit = '10000', ?string $offset = '0'): ?array
+    public function getContacts(string $campaign): ?array
     {
         if (!isset($this->config['campaigns'][$campaign])) {
             return null;
@@ -40,7 +40,24 @@ class SendinblueService
 
         $listId = (int) ($this->config['campaigns'][$campaign]['list_id'] ?? 1);
 
-        return $this->apiInstance->getContactsFromList($listId, null, $limit, $offset)->getContacts();
+        $rows = 500;
+        $contactsResult = $this->apiInstance->getContactsFromList($listId, null, (string) $rows);
+        $contacts = $contactsResult->getContacts();
+        $count = $contactsResult->getCount();
+        $maxPages = ceil($count / $rows);
+
+        if ($maxPages > 1) {
+            $currentPage = 2;
+            while ($currentPage <= $maxPages) {
+                $offset = (($currentPage - 1) * $rows);
+                $contactsResult = $this->apiInstance->getContactsFromList($listId, null, (string) $rows, (string) $offset);
+                array_push($contacts, ...$contactsResult->getContacts());
+
+                $currentPage++;
+            }
+        }
+
+        return $contacts;
     }
 
     /**
