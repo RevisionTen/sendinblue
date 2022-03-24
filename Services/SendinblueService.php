@@ -12,6 +12,7 @@ use SendinBlue\Client\Configuration;
 use SendinBlue\Client\Model\CreateContact;
 use SendinBlue\Client\Model\CreateDoiContact;
 use SendinBlue\Client\Model\GetExtendedContactDetails;
+use SendinBlue\Client\Model\RemoveContactFromList;
 use SendinBlue\Client\Model\UpdateContact;
 
 class SendinblueService
@@ -125,22 +126,49 @@ class SendinblueService
             return false;
         }
 
-        $contact = new CreateDoiContact();
-        $contact->setEmail($email);
-        $contact->setAttributes((object) $attributes);
-
-        $listId = (int) ($this->config['campaigns'][$campaign]['list_id'] ?? 1);
-        $contact->setIncludeListIds([$listId]);
-
         $templateId = $this->config['campaigns'][$campaign]['doi_template_id'] ?? null;
         if (null === $templateId) {
             throw new Exception('You must provide a doi_template_id');
         }
-        $contact->setTemplateId((int) $templateId);
 
-        $contact->setRedirectionUrl($redirectionUrl);
+        $listId = (int) ($this->config['campaigns'][$campaign]['list_id'] ?? 1);
 
-        $this->apiInstance->createDoiContact($contact);
+        try {
+            $contact = $this->getContact($email);
+        } catch (ApiException $exception) {
+            $contact = false;
+        }
+
+        if ($contact) {
+            // Update existing contact.
+            $updateContact = new UpdateContact();
+
+            // Update attributes.
+            $existingAttributes = (object) $contact->getAttributes(); // Sometimes returns an array.
+            foreach ($attributes as $key => $value) {
+                $existingAttributes->{$key} = $value;
+            }
+            $updateContact->setAttributes($existingAttributes);
+
+            // Add to list.
+            $listIds = $contact->getListIds();
+            if (!in_array($listId, $listIds, false)) {
+                $listIds[] = $listId;
+                $updateContact->setListIds($listIds);
+            }
+
+            $this->updateContact($email, $updateContact);
+        } else {
+            // Create new contact.
+            $contact = new CreateDoiContact();
+            $contact->setEmail($email);
+            $contact->setAttributes((object) $attributes);
+            $contact->setIncludeListIds([$listId]);
+            $contact->setTemplateId((int) $templateId);
+            $contact->setRedirectionUrl($redirectionUrl);
+
+            $this->apiInstance->createDoiContact($contact);
+        }
 
         return true;
     }
@@ -161,7 +189,9 @@ class SendinblueService
             return false;
         }
 
-        $this->apiInstance->removeContactFromList($this->config['campaigns'][$campaign]['list_id'], $email);
+        $removeContactFromList = new RemoveContactFromList();
+        $removeContactFromList->setEmails([$email]);
+        $this->apiInstance->removeContactFromList($this->config['campaigns'][$campaign]['list_id'], $removeContactFromList);
 
         return true;
     }
