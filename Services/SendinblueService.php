@@ -120,8 +120,12 @@ class SendinblueService
      *
      * @throws ApiException
      */
-    public function subscribeWithDoubleOptIn(string $campaign, string $email, string $source = null, array $attributes = [], string $redirectionUrl): bool
+    public function subscribeWithDoubleOptIn(string $campaign, string $email, string $source = null, array $attributes = [], string $redirectionUrl = null): bool
     {
+        if (null === $redirectionUrl) {
+            throw new Exception('You must provide a $redirectionUrl');
+        }
+
         if (!isset($this->config['campaigns'][$campaign])) {
             return false;
         }
