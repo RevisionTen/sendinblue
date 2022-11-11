@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class SendinblueBundle extends Bundle
 {
-    public const VERSION = '1.0.2';
+    public const VERSION = '1.1.0';
 
     public function boot(): void
     {
