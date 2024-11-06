@@ -6,14 +6,14 @@ namespace RevisionTen\Sendinblue\Services;
 
 use Exception;
 use GuzzleHttp\Client;
-use SendinBlue\Client\Api\ContactsApi;
-use SendinBlue\Client\ApiException;
-use SendinBlue\Client\Configuration;
-use SendinBlue\Client\Model\CreateContact;
-use SendinBlue\Client\Model\CreateDoiContact;
-use SendinBlue\Client\Model\GetExtendedContactDetails;
-use SendinBlue\Client\Model\RemoveContactFromList;
-use SendinBlue\Client\Model\UpdateContact;
+use Brevo\Client\Api\ContactsApi;
+use Brevo\Client\ApiException;
+use Brevo\Client\Configuration;
+use Brevo\Client\Model\CreateContact;
+use Brevo\Client\Model\CreateDoiContact;
+use Brevo\Client\Model\GetExtendedContactDetails;
+use Brevo\Client\Model\RemoveContactFromList;
+use Brevo\Client\Model\UpdateContact;
 
 class SendinblueService
 {
